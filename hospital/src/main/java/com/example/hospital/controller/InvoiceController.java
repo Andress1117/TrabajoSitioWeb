@@ -1,49 +1,30 @@
 package com.example.hospital.controller;
 
 import com.example.hospital.dto.InvoiceDTO;
+import com.example.hospital.model.Invoice;
 import com.example.hospital.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/invoices")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5500")  // Asegúrate de que el frontend esté configurado con esta URL
 public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
 
     @PostMapping
-    public InvoiceDTO createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
-        // Log para verificar que los datos están llegando correctamente
-        System.out.println("Recibiendo factura: " + invoiceDTO);
-
-        if (invoiceDTO.getPatientId() == null) {
-            throw new RuntimeException("El ID del paciente no puede ser nulo.");
+    public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
+        try {
+            Invoice savedInvoice = invoiceService.saveInvoice(invoiceDTO);
+            return new ResponseEntity<>(savedInvoice, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return invoiceService.createInvoice(invoiceDTO);
     }
 
-    @GetMapping("/{id}")
-    public InvoiceDTO getInvoice(@PathVariable Long id) {
-        return invoiceService.getInvoiceById(id);
-    }
-
-    @GetMapping
-    public List<InvoiceDTO> getAllInvoices() {
-        return invoiceService.getAllInvoices();
-    }
-
-    @PutMapping("/{id}")
-    public InvoiceDTO updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoiceDTO) {
-        return invoiceService.updateInvoice(id, invoiceDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteInvoice(@PathVariable Long id) {
-        invoiceService.deleteInvoice(id);
-    }
+    // Otros métodos CRUD (Get, Update, Delete) si es necesario
 }

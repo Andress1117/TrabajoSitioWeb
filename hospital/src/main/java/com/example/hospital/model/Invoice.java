@@ -14,7 +14,7 @@ public class Invoice {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    private Patient patient;  // Relación con la entidad Patient
 
     @Column(nullable = false)
     private LocalDate date;
