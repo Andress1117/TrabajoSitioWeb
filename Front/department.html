@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrar Departamento</title>
+  <title>Departamentos - Administración de Hospital</title>
   <link href="https://fonts.googleapis.com/css2?family=Gill+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -36,23 +36,56 @@
   </nav>
 
   <div class="container mt-5">
-    <h1 class="text-center text-primary mb-4">Registrar Departamento</h1>
+    <h2>Gestión de Departamentos</h2>
 
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow-sm p-4">
-          <form id="departmentForm">
+    <!-- Formulario de ingreso de departamento -->
+    <form id="departmentForm" class="mt-4">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del Departamento</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">Ubicación</label>
+        <input type="text" class="form-control" id="location">
+      </div>
+      <button type="submit" class="btn btn-success">Guardar Departamento</button>
+    </form>
+
+    <!-- Tabla de departamentos -->
+    <h3 class="mt-5">Listado de Departamentos</h3>
+    <input type="text" id="filterInput" class="form-control mb-3" placeholder="Buscar por nombre...">
+
+    <table class="table table-striped" id="departmentTable">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Ubicación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal de edición -->
+  <div class="modal" tabindex="-1" id="editDepartmentModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Departamento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editDepartmentForm">
             <div class="mb-3">
-              <label for="name" class="form-label">Nombre del Departamento</label>
-              <input type="text" class="form-control" id="name" name="name" maxlength="100" required>
+              <label for="editName" class="form-label">Nombre del Departamento</label>
+              <input type="text" class="form-control" id="editName" required>
             </div>
             <div class="mb-3">
-              <label for="location" class="form-label">Ubicación</label>
-              <input type="text" class="form-control" id="location" name="location" maxlength="100">
+              <label for="editLocation" class="form-label">Ubicación</label>
+              <input type="text" class="form-control" id="editLocation">
             </div>
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary">Registrar Departamento</button>
-            </div>
+            <button type="button" id="updateDepartmentButton" class="btn btn-primary">Actualizar Departamento</button>
           </form>
         </div>
       </div>
@@ -91,40 +124,8 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    // Script para enviar datos
-    document.getElementById('departmentForm').addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const location = document.getElementById('location').value;
-
-      fetch('/api/departments', { // Cambia esta URL según tu backend en Java Spring
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: name,
-          location: location
-        })
-      })
-      .then(response => {
-        if (response.ok) {
-          alert('Departamento registrado exitosamente.');
-          document.getElementById('departmentForm').reset();
-        } else {
-          alert('Error al registrar el departamento.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error en la conexión.');
-      });
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/department.js"></script>
 
 </body>
 
