@@ -24,14 +24,12 @@
       const specialtyCell = row.insertCell();
       const phoneCell = row.insertCell();
       const emailCell = row.insertCell();
-      const addressCell = row.insertCell();
       const actionsCell = row.insertCell();
 
       nameCell.textContent = doctor.name;
       specialtyCell.textContent = doctor.specialty;
       phoneCell.textContent = doctor.phone || "";
       emailCell.textContent = doctor.email || "";
-      addressCell.textContent = doctor.address || "";
 
       const editButton = document.createElement("button");
       editButton.textContent = "Editar";
@@ -67,7 +65,6 @@
       specialty: document.getElementById("specialty").value,
       phone: document.getElementById("phone").value,
       email: document.getElementById("email").value,
-      address: document.getElementById("address").value,
     };
 
     const method = editingDoctorId ? "PUT" : "POST";
@@ -103,7 +100,6 @@
     document.getElementById("editSpecialty").value = doctor.specialty;
     document.getElementById("editPhone").value = doctor.phone || "";
     document.getElementById("editEmail").value = doctor.email || "";
-    document.getElementById("editAddress").value = doctor.address || "";
     editDoctorModal.show();
   }
 
@@ -114,7 +110,6 @@
       specialty: document.getElementById("editSpecialty").value,
       phone: document.getElementById("editPhone").value,
       email: document.getElementById("editEmail").value,
-      address: document.getElementById("editAddress").value,
     };
 
     fetch(`${url}/${editingDoctorId}`, {
