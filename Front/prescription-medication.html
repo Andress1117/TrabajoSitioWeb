@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asignar Medicamento a Receta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gill+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/administrador.css">
+</head>
+
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="images/hospital1.png" alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="administrador.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Asignar Medicamento a Receta</h1>
+
+    <form id="prescriptionMedicationForm" class="bg-white p-5 rounded shadow-sm">
+      <div class="mb-3">
+        <label for="prescriptionId" class="form-label">ID de la Receta *</label>
+        <input type="number" class="form-control" id="prescriptionId" name="prescriptionId" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="medicationId" class="form-label">ID del Medicamento *</label>
+        <input type="number" class="form-control" id="medicationId" name="medicationId" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Cantidad *</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Asignar Medicamento</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="footer mt-5">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h5>🏥 Hospital General</h5>
+          <p>Comprometidos con la salud y el bienestar de nuestra comunidad.</p>
+        </div>
+        <div class="footer-section">
+          <h5>📞 Contacto</h5>
+          <p>📍 Dirección: Calle 123, Ciudad, País</p>
+          <p>📞 Teléfono: +57 123 456 7890</p>
+          <p>📧 Correo: contacto@hospital.com</p>
+        </div>
+        <div class="footer-section">
+          <h5>🌍 Síguenos</h5>
+          <div class="social-icons">
+            <a href="https://www.facebook.com" class="social-icon" target="_blank">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com" class="social-icon" target="_blank">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Hospital General - Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script para capturar y enviar los datos -->
+  <script>
+    document.getElementById('prescriptionMedicationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = {
+        prescriptionId: document.getElementById('prescriptionId').value,
+        medicationId: document.getElementById('medicationId').value,
+        quantity: document.getElementById('quantity').value
+      };
+
+      console.log(formData); // Aquí también puedes hacer un fetch al backend
+    });
+  </script>
+
+</body>
+
+</html>
