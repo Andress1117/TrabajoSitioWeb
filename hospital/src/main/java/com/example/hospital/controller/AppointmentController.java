@@ -1,31 +1,15 @@
 package com.example.hospital.controller;
 
-import com.example.hospital.model.Appointment;
+import com.example.hospital.dto.AppointmentDTO;
 import com.example.hospital.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-
-// Clase para la respuesta de error
-class ErrorResponse {
-    private String message;
-
-    public ErrorResponse(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-}
+import com.example.hospital.exception.DoctorNotFoundException;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -34,43 +18,77 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
-    // Crear o actualizar una cita
-    @PostMapping
-    public ResponseEntity<?> createOrUpdateAppointment(@RequestBody Appointment appointment) {
-        try {
-            Appointment savedAppointment = appointmentService.saveAppointment(appointment);
-            return new ResponseEntity<>(savedAppointment, HttpStatus.CREATED);
-        } catch (RuntimeException ex) {
-            // Retornar un objeto de error con el mensaje
-            ErrorResponse errorResponse = new ErrorResponse("Error al crear o actualizar la cita.");
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     // Obtener todas las citas
     @GetMapping
-    public ResponseEntity<List<Appointment>> getAllAppointments() {
-        List<Appointment> appointments = appointmentService.getAllAppointments();
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointments() {
+        List<AppointmentDTO> appointments = appointmentService.getAllAppointments();
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
-    // Obtener una cita por ID
+    // Obtener cita por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> getAppointmentById(@PathVariable("id") Long id) {
-        Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
-        return appointment.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<AppointmentDTO> getAppointmentById(@PathVariable Long id) {
+        return appointmentService.getAppointmentById(id)
+                .map(appointment -> new ResponseEntity<>(appointment, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Eliminar una cita por ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAppointment(@PathVariable("id") Long id) {
+    // Obtener citas por doctor
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDoctor(@PathVariable Long doctorId) {
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsByDoctor(doctorId);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    // Obtener citas por paciente
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByPatient(@PathVariable Long patientId) {
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsByPatient(patientId);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    // Obtener citas por rango de fechas
+    @GetMapping("/daterange")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsByDateRange(start, end);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    // Crear una nueva cita
+    @PostMapping
+    public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
+        System.out.println("AppointmentDTO recibido en createAppointment: " + appointmentDTO);
         try {
-            appointmentService.deleteAppointment(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException ex) {
-            // Retornar un mensaje en caso de error
-            ErrorResponse errorResponse = new ErrorResponse("No se encontró la cita para eliminar.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            AppointmentDTO createdAppointment = appointmentService.createAppointment(appointmentDTO);
+            return new ResponseEntity<>(createdAppointment, HttpStatus.CREATED);
+        } catch (DoctorNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Actualizar una cita existente
+    @PutMapping("/{id}")
+    public ResponseEntity<AppointmentDTO> updateAppointment(
+            @PathVariable Long id,
+            @RequestBody AppointmentDTO appointmentDTO) {
+        AppointmentDTO updatedAppointment = appointmentService.updateAppointment(id, appointmentDTO);
+        if (updatedAppointment != null) {
+            return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Eliminar una cita
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
+        boolean deleted = appointmentService.deleteAppointment(id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
