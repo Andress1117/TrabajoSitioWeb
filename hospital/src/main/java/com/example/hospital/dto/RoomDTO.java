@@ -1,34 +1,20 @@
 package com.example.hospital.dto;
 
 public class RoomDTO {
-    private Long roomId;
-    private int number;
+    private String number;
     private Long departmentId;
     private String status;
 
+    // Constructor vacío
     public RoomDTO() {
     }
 
-    public RoomDTO(Long roomId, int number, Long departmentId, String status) {
-        this.roomId = roomId;
-        this.number = number;
-        this.departmentId = departmentId;
-        this.status = status;
-    }
-
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
-    }
-
-    public int getNumber() {
+    // Getters y Setters
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -47,6 +33,4 @@ public class RoomDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    // Getters y Setters
 }

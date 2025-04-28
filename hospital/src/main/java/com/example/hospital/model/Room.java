@@ -8,31 +8,34 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
-    private int number;
+    private String number;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @Column(nullable = false, length = 20)
     private String status;
 
-    public Long getRoomId() {
-        return roomId;
+    // Constructor vacío
+    public Room() {
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    // Getters y Setters
+    public Long getId() {
+        return id;
     }
 
-    public int getNumber() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -51,6 +54,4 @@ public class Room {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    
 }

@@ -53,6 +53,4 @@ public class Invoice {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
-
-    
 }
