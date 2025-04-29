@@ -1,15 +1,16 @@
 package com.example.hospital.dto;
 
+import com.example.hospital.model.Prescription;
 import java.time.LocalDate;
 
 public class PrescriptionDTO {
+
     private Long prescriptionId;
     private Long patientId;
     private Long doctorId;
     private LocalDate issueDate;
 
-    public PrescriptionDTO() {
-    }
+    public PrescriptionDTO() {}
 
     public PrescriptionDTO(Long prescriptionId, Long patientId, Long doctorId, LocalDate issueDate) {
         this.prescriptionId = prescriptionId;
@@ -50,5 +51,12 @@ public class PrescriptionDTO {
         this.issueDate = issueDate;
     }
 
-    // Getters y Setters
+    public static PrescriptionDTO fromEntity(Prescription prescription) {
+        return new PrescriptionDTO(
+            prescription.getPrescriptionId(),
+            prescription.getPatient().getPatientId(),
+            prescription.getDoctor().getDoctorId(),
+            prescription.getIssueDate()
+        );
+    }
 }
