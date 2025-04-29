@@ -1,9 +1,10 @@
 package com.example.hospital.service;
 
 import com.example.hospital.model.Medication;
-import com.example.hospital.repository.IMedicationRepository;
+import com.example.hospital.repository.MedicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,21 +12,38 @@ import java.util.Optional;
 public class MedicationService {
 
     @Autowired
-    private IMedicationRepository medicationRepository;
+    private MedicationRepository medicationRepository;
 
-    public List<Medication> findAll() {
-        return medicationRepository.findAll();
-    }
-
-    public Optional<Medication> findById(Integer id) {
-        return medicationRepository.findById(id);
-    }
-
-    public Medication save(Medication medication) {
+    // Crear un nuevo medicamento
+    public Medication createMedication(Medication medication) {
         return medicationRepository.save(medication);
     }
 
-    public void deleteById(Integer id) {
-        medicationRepository.deleteById(id);
+    // Obtener todos los medicamentos
+    public List<Medication> getAllMedications() {
+        return medicationRepository.findAll();
+    }
+
+    // Obtener un medicamento por su ID
+    public Optional<Medication> getMedicationById(Long id) {
+        return medicationRepository.findById(id);
+    }
+
+    // Actualizar un medicamento existente
+    public Medication updateMedication(Long id, Medication medication) {
+        if (medicationRepository.existsById(id)) {
+            medication.setMedicationId(id);
+            return medicationRepository.save(medication);
+        }
+        return null;
+    }
+
+    // Eliminar un medicamento por su ID
+    public boolean deleteMedication(Long id) {
+        if (medicationRepository.existsById(id)) {
+            medicationRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
