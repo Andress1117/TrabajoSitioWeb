@@ -27,7 +27,7 @@
           <li class="nav-item"><a class="nav-link text-white" href="index.html">Inicio</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="servicios.html">Servicios</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="contacto.html">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link text-white active" href="invoice.html">Crear Factura</a></li>
+          <li class="nav-item"><a class="nav-link text-white active" href="administrador.html">Admin</a></li>
         </ul>
       </div>
     </div>
@@ -36,6 +36,7 @@
   <div class="container mt-5">
     <h2 class="text-center">Crear Factura</h2>
 
+    <!-- Formulario de factura -->
     <form id="invoiceForm" class="mt-4">
       <div class="mb-3">
         <label for="patientId" class="form-label">ID del Paciente</label>
@@ -54,8 +55,12 @@
 
       <button type="submit" class="btn btn-success btn-block">Crear Factura</button>
     </form>
+
+    <!-- Contenedor de alerta -->
+    <div id="alertMessage" class="alert" style="display:none;"></div>
   </div>
 
+  <!-- Pie de página -->
   <footer class="footer mt-5">
     <div class="container">
       <div class="footer-content">
